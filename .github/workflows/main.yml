@@ -1,0 +1,48 @@
+name: Build BOTHER
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure (universal arm64 + x86_64)
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
+            -DBOTHER_BUILD_TESTS=ON
+
+      - name: Build AU, VST3 and the engine test
+        run: cmake --build build --config Release --target BOTHER_AU BOTHER_VST3 BOTHER_Test -j 4
+
+      - name: Run offline engine test
+        run: ./build/BOTHER_Test_artefacts/Release/BOTHER_Test
+
+      - name: Sign (ad hoc) and zip
+        run: |
+          ART=build/BOTHER_artefacts/Release
+          codesign --force --deep --sign - "$ART/AU/BOTHER.component"
+          codesign --force --deep --sign - "$ART/VST3/BOTHER.vst3"
+          mkdir -p dist
+          ditto -c -k --keepParent "$ART/AU/BOTHER.component" dist/BOTHER-AU.zip
+          ditto -c -k --keepParent "$ART/VST3/BOTHER.vst3" dist/BOTHER-VST3.zip
+
+      - name: Upload plugins
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOTHER-macOS
+          path: dist/*.zip
+
+      - name: Validate AU with auval
+        run: |
+          mkdir -p ~/Library/Audio/Plug-Ins/Components
+          cp -R build/BOTHER_artefacts/Release/AU/BOTHER.component ~/Library/Audio/Plug-Ins/Components/
+          killall -9 AudioComponentRegistrar || true
+          auval -v aufx Bthr Mnrs
