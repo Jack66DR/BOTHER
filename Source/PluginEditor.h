@@ -7,7 +7,7 @@
 
 namespace bother::ui
 {
-    // The nuisance meter, set into the card. Left: two cycles of the shape as EDGE has it, printed.
+    // The modulation display, set into the card. Left: two cycles of the shape as EDGE has it, printed.
     // Right: the gain you are actually hearing over the last two and a half seconds, lit.
     // Along the bottom: where the drift is pushing the rate.
     class Monitor : public juce::Component

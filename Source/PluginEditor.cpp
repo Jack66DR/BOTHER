@@ -17,7 +17,7 @@ namespace
 
     const juce::Identifier kScaleProp { "uiScale" };
 
-    // the nuisance meter's window, in face coordinates
+    // the modulation window, in face coordinates
     const juce::Rectangle<float> kWindow { 420.0f, 128.0f, 591.0f, 350.0f };
 
     // inside the window
@@ -39,7 +39,7 @@ namespace
 //==============================================================================
 Monitor::Monitor (BotherProcessor& p) : proc (p)
 {
-    setTitle ("Nuisance meter: the shape, the wobble you are hearing, and the drift");
+    setTitle ("Modulation display: the shape, the wobble you are hearing, and the drift");
     setInterceptsMouseClicks (false, false);
 }
 
@@ -93,7 +93,7 @@ void Monitor::paint (juce::Graphics& g)
     manners::paintWorn (g, *this, [&] (juce::Graphics& lg)
     {
         lg.setColour (ink);
-        manners::text (lg, "NUISANCE METER", 22.0f, 30.0f, 19.0f, 0.12f, juce::Justification::centredLeft, 300.0f);
+        manners::text (lg, "MODULATION", 22.0f, 30.0f, 19.0f, 0.12f, juce::Justification::centredLeft, 300.0f);
         manners::text (lg, sync ? beatName + (locked ? "  LOCKED" : "  SYNC") : juce::String ("FREE"),
                        w - 22.0f, 30.0f, 19.0f, 0.10f, juce::Justification::centredRight, 300.0f);
 

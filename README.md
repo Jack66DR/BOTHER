@@ -64,7 +64,7 @@ GRIT sits after it, so the quiet troughs sputter: fewer bits matter most when th
 
 The manners! house face, worn card and all. BOTHER prints in sunburnt coral, with the live light in seasick mint.
 
-The nuisance meter is a window cut into the card:
+The MODULATION display is a window cut into the card:
 
 - **Left**: two cycles of the shape exactly as EDGE has it, printed.
 - **Right**: the gain you are actually hearing over the last 2.5 seconds, lit. Drift, sway and sync all show up here as they happen.
